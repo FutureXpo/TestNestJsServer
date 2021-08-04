@@ -20,7 +20,8 @@ import {
 	ApiOperation,
 	ApiTags,
 	ApiParam,
-	ApiBody
+	ApiBody,
+	ApiHeader
 } from '@nestjs/swagger';
 
 const book_schema = {
