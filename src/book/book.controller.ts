@@ -97,6 +97,7 @@ export class BookController {
 		return await this.bookService.findOne({slug});
 	}
 
+	@ApiHeader({ name: 'Authorization', description: 'You need bearer authorization to use this method' })
 	@ApiBody({schema: req_book_schema })
 	@ApiOperation({summary: 'Create book'})
 	@ApiResponse({
@@ -112,6 +113,7 @@ export class BookController {
 		return this.bookService.create(userId, bookData);
 	}
 
+	@ApiHeader({ name: 'Authorization', description: 'You need bearer authorization to use this method' })
 	@ApiBody({schema: req_book_schema })
 	@ApiParam({
 		name: 'slug',
@@ -151,6 +153,7 @@ export class BookController {
 		return this.bookService.delete(params.slug);
 	}
 
+	@ApiHeader({ name: 'Authorization', description: 'You need bearer authorization to use this method' })
 	@ApiParam({
 		name: 'slug',
 		type: 'String',
@@ -169,6 +172,7 @@ export class BookController {
 		return await this.bookService.take(userId, slug);
 	}
 
+	@ApiHeader({ name: 'Authorization', description: 'You need bearer authorization to use this method' })
 	@ApiParam({
 		name: 'slug',
 		type: 'String',
