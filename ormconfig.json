@@ -1,0 +1,10 @@
+{
+  "type": "mysql",
+  "host": "hwr4wkxs079mtb19.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
+  "port": 3306,
+  "username": "fqv5na0oagna5wvh",
+  "password": "oe7868x9fmha3iqq",
+  "database": "huwjf014p2krmkh7",
+  "entities": ["src/**/**.entity{.ts,.js}"],
+  "synchronize": true
+}
