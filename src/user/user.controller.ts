@@ -26,62 +26,21 @@ import {
 	ApiBody,
 	ApiResponse,
 	ApiTags,
-	ApiOperation
+	ApiOperation,
+	ApiHeader
 } from '@nestjs/swagger';
 
-const req_ticket_schema = {
-	type: 'object',
-	properties: {
-		ticket: {
-			type: 'object',
-			properties: {
-				type: {type: 'string', example: 'basic'},
-				startDate: {type: 'number', example: 1627904902635},
-				endDate: {type: 'number', example: 1627991302635},
-			}
-		}
-	}
-};
-
-const req_user_schema = {
-	type: 'object',
-	properties: {
-		user: {
-			type: 'object',
-			properties: {
-				username: {type: 'string', example: 'example'},
-				email: {type: 'string', example: 'example@mail.ru'},
-				password: {type: 'string', example: 'asfaidbgfoaub21'},
-			}
-		}
-	}
-};
-
-const req_update_user_schema = {
-	type: 'object',
-	properties: {
-		user: {
-			type: 'object',
-			properties: {
-				username: {type: 'string', example: 'example'},
-				email: {type: 'string', example: 'example@mail.ru'}
-			}
-		}
-	}
-};
-
-const req_login_user_schema = {
-	type: 'object',
-	properties: {
-		user: {
-			type: 'object',
-			properties: {
-				email: {type: 'string', example: 'example@mail.ru'},
-				password: {type: 'string', example: 'asfaidbgfoaub21'},
-			}
-		}
-	}
-};
+const { 
+	succsess_schema,
+	user_login_schema,
+	user_logged_info_schema,
+	user_info_schema,
+	users_schema,
+	req_ticket_schema,
+	req_user_schema,
+	req_update_user_schema,
+	req_login_user_schema
+} = require( './schemas');
 
 @ApiBearerAuth()
 @ApiTags('user')
@@ -91,19 +50,21 @@ export class UserController {
 	constructor(private readonly userService: UserService) {}
 
 	@ApiOperation({summary: 'Get all users'})
-	@ApiResponse({status: 200, description: 'Users were returned'})
+	@ApiResponse({status: 200, description: 'Users were returned', schema: users_schema})
 	@Get('users')
 	async findAll() {
 		return await this.userService.findAll();
 	}
 
+	@ApiHeader({ name: 'Authorization', description: 'You need bearer authorization to use this method' })
 	@ApiOperation({summary: 'Get info about logged in user'})
-	@ApiResponse({status: 200, description: 'User has been returned'})
+	@ApiResponse({status: 200, description: 'User has been returned', schema: user_logged_info_schema})
 	@Get('user')
 	async findMe(@User('email') email: string): Promise<UserRO> {
 		return await this.userService.findByEmail(email);
 	}
 	
+	@ApiHeader({ name: 'Authorization', description: 'You need bearer authorization to use this method' })
 	@ApiBody({schema: req_update_user_schema })
 	//@ApiBody({ type: UpdateUserDto })
 	@ApiOperation({summary: 'Update user data'})
@@ -126,6 +87,7 @@ export class UserController {
 		return this.userService.create(userData);
 	}
 
+	@ApiHeader({ name: 'Authorization', description: 'You need bearer authorization to use this method' })
 	@ApiOperation({summary: 'Delete user'})
 	@ApiResponse({status: 200, description: 'User has been deleted'})
 	@Delete('user')
@@ -135,7 +97,7 @@ export class UserController {
 
 	@ApiBody({schema: req_login_user_schema })
 	@ApiOperation({summary: 'Authorize user'})
-	@ApiResponse({status: 201, description: 'User has been authorized'})
+	@ApiResponse({status: 201, description: 'User has been authorized', schema: user_login_schema})
 	@UsePipes(new ValidationPipe())
 	@Post('users/login')
 	async login(@Body('user') loginUserDto: LoginUserDto): Promise<UserRO> {
@@ -150,10 +112,11 @@ export class UserController {
 		return {user};
 	}
 
+	@ApiHeader({ name: 'Authorization', description: 'You need bearer authorization to use this method' })
 	@ApiBody({schema: req_ticket_schema })
 	//@ApiBody({ type: CreateTicketDto })
 	@ApiOperation({summary: 'Buy ticket'})
-	@ApiResponse({status: 201, description: 'Ticket has been added to the user'})
+	@ApiResponse({status: 201, description: 'Ticket has been added to the user', schema: succsess_schema})
 	@Post('user/ticket')
 	async buyTicket(
 		@User('id') userId: number,
@@ -162,8 +125,9 @@ export class UserController {
 		return await this.userService.buyTicket(userId, ticket);
 	}
 
+	@ApiHeader({ name: 'Authorization', description: 'You need bearer authorization to use this method' })
 	@ApiOperation({summary: 'Sell ticket'})
-	@ApiResponse({status: 201, description: 'Ticket was deleted from the user'})
+	@ApiResponse({status: 200, description: 'Ticket was deleted from the user', schema: succsess_schema})
 	@Delete('user/ticket')
 	async sellTicket(@User('id') userId: number) {
 		return await this.userService.sellTicket(userId);
