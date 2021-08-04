@@ -24,44 +24,12 @@ import {
 	ApiHeader
 } from '@nestjs/swagger';
 
-const book_schema = {
-	type: 'object',
-	properties: {
-		book: {
-			type: 'object',
-			properties: {
-				id: {type: 'integer', example: 0},
-				slug: {type: 'string', example: 'title-a21fdf2'},
-				title: {type: 'string', example: 'Title'},
-				description: {type: 'string', example: 'Some description'},
-				body: {type: 'string', example: 'Some text'}
-			}
-		}
-	}
-};
-const books_schema = {
-	type: 'object',
-	properties: {
-		books: {
-			type: 'array',
-			items: book_schema.properties.book
-		},
-		booksCount: {type: 'integer', example: 1}
-	}
-};
-const req_book_schema = {
-	type: 'object',
-	properties: {
-		book: {
-			type: 'object',
-			properties: {
-				title: {type: 'string', example: 'Title'},
-				description: {type: 'string', example: 'Some description'},
-				body: {type: 'string', example: 'Some text'}
-			}
-		}
-	}
-};
+const { 
+	succsess_schema,
+	book_schema,
+	books_schema,
+	req_book_schema
+} = require( '../user/schemas');
 
 @ApiBearerAuth()
 @ApiTags('books')
@@ -103,7 +71,8 @@ export class BookController {
 	@ApiOperation({summary: 'Create book'})
 	@ApiResponse({
 		status: 201,
-		description: 'The book has been successfully created.'
+		description: 'The book has been successfully created.',
+		schema: book_schema
 	})
 	@ApiResponse({status: 403, description: 'Forbidden.'})
 	@Post()
@@ -164,7 +133,8 @@ export class BookController {
 	@ApiOperation({summary: 'Take the book'})
 	@ApiResponse({
 		status: 201,
-		description: 'The book has been successfully taken.'
+		description: 'The book has been successfully taken.',
+		schema: succsess_schema
 	})
 	@ApiResponse({status: 401, description: 'Unauthorized.'})
 	@ApiResponse({status: 403, description: 'Forbidden.'})
@@ -183,7 +153,8 @@ export class BookController {
 	@ApiOperation({summary: 'Return the book'})
 	@ApiResponse({
 		status: 201,
-		description: 'The book has been successfully returned.'
+		description: 'The book has been successfully returned.', 
+		schema: succsess_schema
 	})
 	@ApiResponse({status: 401, description: 'Unauthorized.'})
 	@ApiResponse({status: 403, description: 'Forbidden.'})
