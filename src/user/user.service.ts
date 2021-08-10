@@ -95,8 +95,12 @@ export class UserService {
 	}
 
 	async delete(email: string): Promise<DeleteResult> {
-		/*let toDelete = await this.userRepository.findOne({email: email});
-	console.log(toDelete);*/
+		let user = await this.userRepository.findOne({
+			where: {email: email},
+			relations: ['ticket']
+		});
+		if(user.ticket)
+			await this.ticketRepository.delete({id: user.ticket.id});
 		return await this.userRepository.delete({email: email});
 	}
 
