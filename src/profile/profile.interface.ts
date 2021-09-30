@@ -6,6 +6,5 @@ export interface ProfileData {
 }
 
 export interface ProfileRO {
-  isSuccsess: boolean;
   profile: ProfileData;
 }
