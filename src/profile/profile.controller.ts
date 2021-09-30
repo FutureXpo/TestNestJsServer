@@ -20,7 +20,7 @@ export class ProfileController {
   @ApiOperation({ summary: 'Get profile of the user' })
   @ApiResponse({ status: 200, description: 'Profile was returned', schema: profile_schema })
   @Get(':username')
-  async getProfile(@Param('username') username: string): Promise<ProfileRO> {
+  async getProfile(@Param('username') username: string) {
     return await this.profileService.findProfile(username);
   }
 

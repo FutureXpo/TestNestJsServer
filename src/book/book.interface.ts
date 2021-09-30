@@ -1,36 +1,37 @@
 import { UserData } from '../user/user.interface';
 import { BookEntity } from './book.entity';
+import { ApiModel, ApiProperty } from '@nestjs/swagger';
 
-@ApiModel
+//@ApiModel
 interface BookData {
-  @ApiModelProperty
+  //@ApiModelProperty
   slug: string;
   
-  @ApiModelProperty
+  //@ApiModelProperty
   title: string;
   
-  @ApiModelProperty
+  //@ApiModelProperty
   description: string;
   
-  @ApiModelProperty
+  //@ApiModelProperty
   body?: string;
   
-  @ApiModelProperty
+  //@ApiModelProperty
   owner?: UserData;
 }
 
-@ApiModel
+//@ApiModel
 export interface BookRO {
-  @ApiModelProperty
+  //@ApiModelProperty
   book: BookEntity;
 }
 
-@ApiModel
+//@ApiModel
 export interface BooksRO {
-  @ApiModelProperty
+  //@ApiModelProperty
   books: BookEntity[];
   
-  @ApiModelProperty
+  //@ApiModelProperty
   booksCount: number;
 }
 

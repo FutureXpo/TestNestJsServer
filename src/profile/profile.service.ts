@@ -12,17 +12,19 @@ export class ProfileService {
     private readonly userRepository: Repository<UserEntity>,
   ) {}
 
-  async findProfile(username: string): Promise<ProfileRO> {
+  async findProfile(username: string){
     const _profile = await this.userRepository.findOne({ where: { username: username }, relations: ['books','ticket'] })
-
-    if(!_profile) return;
-
+	let isSuccsess = false;
+	
+    if(!_profile) return {isSuccsess};
+	
+	isSuccsess = true;
     let profile: ProfileData = {
       username: _profile.username,
 	  books: _profile.books
     };
 
-    return {profile};
+    return {isSuccsess,profile};
   }
 
 }
